@@ -131,7 +131,7 @@ class CoffeeHistoryEvent(DataClassJSONMixin):
 
     timestamp: datetime = field(
         metadata=field_options(
-            deserialize=lambda ts: datetime.fromtimestamp(ts / 1000, tz=timezone.utc),
+            deserialize=lambda ts: datetime.fromtimestamp(ts / 1000), # Change to local time zone
         )
     )
     value: int
@@ -154,7 +154,7 @@ class LastCoffee(DataClassJSONMixin):
 
     time: datetime = field(
         metadata=field_options(
-            deserialize=lambda ts: datetime.fromtimestamp(ts / 1000, tz=timezone.utc),
+            deserialize=lambda ts: datetime.fromtimestamp(ts / 1000), # Change to local time zone
         )
     )
     extraction_seconds: float = field(
@@ -166,11 +166,17 @@ class LastCoffee(DataClassJSONMixin):
     dose_index: DoseIndex = field(
         metadata=field_options(alias="doseIndex"),
     )
+    dose_value: float | None = field(
+        metadata=field_options(alias="doseValue"), # Added to support brew by weight
+    )
     dose_value_numerator: str | None = field(
         metadata=field_options(alias="doseValueNumerator"),
         default=None,
     )
-
+    def __post_init__(self): # Round extraction and dose results
+        self.extraction_seconds = round(self.extraction_seconds,1)
+        if self.dose_value != None:
+            self.dose_value = round(self.dose_value,1)
 
 @dataclass(kw_only=True)
 class CoffeeAndFlushCounter(BaseWidgetOutput):

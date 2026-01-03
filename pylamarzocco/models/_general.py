@@ -53,9 +53,9 @@ class Thing(DataClassJSONMixin):
     connection_date: datetime = field(
         metadata=field_options(
             alias="connectionDate",
-            deserialize=lambda ts: datetime.fromtimestamp(ts / 1000, timezone.utc),
+            deserialize=lambda ts: datetime.fromtimestamp(ts / 1000), # Change to local time
         ),
-        default=datetime.now(timezone.utc),
+        default=datetime.now(), # Change to local time
     )
     offline_mode: bool = field(
         metadata=field_options(alias="offlineMode"), default=False

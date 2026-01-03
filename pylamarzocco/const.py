@@ -173,6 +173,7 @@ class DoseMode(StrEnum):
     PULSES_TYPE = "PulsesType"
     DOSE_1 = "Dose1"
     DOSE_2 = "Dose2"
+    MASS_TYPE = "MassType" # Added to support brew by weight
 
 
 class DoseIndex(StrEnum):

@@ -129,7 +129,7 @@ class LaMarzoccoThing:
 
     @cloud_only
     async def get_settings(self) -> None:
-        """Get the dashboard for a thing."""
+        """Get the settings for a thing."""
         assert self._cloud_client
         self.settings = await self._cloud_client.get_thing_settings(self.serial_number)
 
