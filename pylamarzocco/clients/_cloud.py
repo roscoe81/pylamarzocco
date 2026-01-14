@@ -558,7 +558,7 @@ class LaMarzoccoCloudClient:
 
         data = {
             "boilerIndex": boiler_index,
-            "targetLevel": target_level.value,
+            "targetLevel": target_level,
         }
         return await self.__execute_command(
             serial_number, "CoffeeMachineSettingSteamBoilerTargetLevel", data
