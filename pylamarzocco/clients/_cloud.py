@@ -490,12 +490,14 @@ class LaMarzoccoCloudClient:
             data=data,
         )
         cr = CommandResponse.from_dict(response[0])
-        future: Future[CommandResponse] = Future()
-        self._pending_commands[cr.id] = future
 
         # if the websocket is closed we don't want to wait for confirmation
         if not self.websocket.connected:
             return True
+
+        # 1e02980 fix: only register the pending Future once we know we're connected
+        future: Future[CommandResponse] = Future()
+        self._pending_commands[cr.id] = future
 
         try:
             # Wait for the future to be completed or timeout
